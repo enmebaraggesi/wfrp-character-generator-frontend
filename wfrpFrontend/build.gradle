@@ -14,6 +14,7 @@ java {
 
 repositories {
     mavenCentral()
+    maven { url = "https://maven.vaadin.com/vaadin-addons" }
 }
 
 ext {
@@ -22,6 +23,8 @@ ext {
 
 dependencies {
     implementation 'com.vaadin:vaadin-spring-boot-starter'
+// https://mvnrepository.com/artifact/org.vaadin.stefan/html-table
+    implementation 'org.vaadin.stefan:html-table:1.2.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
