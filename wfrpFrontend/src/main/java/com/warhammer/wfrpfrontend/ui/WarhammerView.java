@@ -11,17 +11,21 @@ import com.warhammer.wfrpfrontend.creators.TableCreator;
 public class WarhammerView extends VerticalLayout {
     
     public WarhammerView(TableCreator tableCreator) {
-        VerticalLayout firstSection = getFirstSection();
-        HorizontalLayout secondSection = tableCreator.getAttributesAndPointsTable();
-        VerticalLayout thirdSection = tableCreator.getPointsTable();
-        HorizontalLayout fourthSection = tableCreator.getBasicSkillsTables();
-        HorizontalLayout fifthSection = tableCreator.getAdvancedSkillsAndTalentsTables();
-        HorizontalLayout sixthSection = tableCreator.getWeaponsTable();
-        HorizontalLayout seventhSection = tableCreator.getArmorsTable();
-        add(firstSection, secondSection, thirdSection, fourthSection, fifthSection, sixthSection, seventhSection);
+        VerticalLayout characterDescription = getCharacterDescription();
+        HorizontalLayout attributesAndPointsTable = tableCreator.getAttributesAndPointsTable();
+        VerticalLayout pointsTable = tableCreator.getPointsTable();
+        HorizontalLayout basicSkillsTables = tableCreator.getBasicSkillsTables();
+        HorizontalLayout advancedSkillsAndTalentsTables = tableCreator.getAdvancedSkillsAndTalentsTables();
+        HorizontalLayout weaponsTable = tableCreator.getWeaponsTable();
+        HorizontalLayout armorsTable = tableCreator.getArmorsTable();
+        HorizontalLayout inventory = tableCreator.getInventory();
+        VerticalLayout weaponsAndArmors = new VerticalLayout(weaponsTable, armorsTable);
+        HorizontalLayout equipmentTables = new HorizontalLayout(weaponsAndArmors, inventory);
+        add(characterDescription, attributesAndPointsTable, pointsTable, basicSkillsTables,
+            advancedSkillsAndTalentsTables, equipmentTables);
     }
     
-    private static VerticalLayout getFirstSection() {
+    private static VerticalLayout getCharacterDescription() {
         Paragraph name = new Paragraph("Imię:");
         Paragraph race = new Paragraph("Rasa:");
         TextField nameText = new TextField();
@@ -36,8 +40,8 @@ public class WarhammerView extends VerticalLayout {
         TextField eyesText = new TextField();
         Paragraph hair = new Paragraph("Kolor włosów:");
         TextField hairText = new TextField();
-        HorizontalLayout lowerSide = new HorizontalLayout(Alignment.CENTER, age, ageText, height, heightText, eyes, eyesText,
-                                                          hair, hairText);
+        HorizontalLayout lowerSide = new HorizontalLayout(Alignment.CENTER, age, ageText, height, heightText,
+                                                          eyes, eyesText, hair, hairText);
         return new VerticalLayout(upperSide, lowerSide);
     }
 }

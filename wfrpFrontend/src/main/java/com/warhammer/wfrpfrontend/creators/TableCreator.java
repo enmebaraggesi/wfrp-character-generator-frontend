@@ -1,6 +1,5 @@
 package com.warhammer.wfrpfrontend.creators;
 
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -826,5 +825,27 @@ public class TableCreator {
         row5.addDataCell().add(traits5);
         
         return new HorizontalLayout(armory);
+    }
+    
+    public HorizontalLayout getInventory() {
+        Table inventory = new Table();
+        TableRow tableName = inventory.addRow();
+        TableHeaderCell tableNameCell = tableName.addHeaderCell();
+        tableNameCell.setText("WYPOSAŻENIE");
+        tableNameCell.setColSpan(2);
+        
+        TableRow titlesRow = inventory.addRow();
+        titlesRow.addHeaderCell().setText("Nazwa");
+        titlesRow.addHeaderCell().setText("Waga");
+        
+        TableRow inventoryRow = inventory.addRow();
+        TextField items = new TextField();
+        items.setHeightFull();
+        inventoryRow.addDataCell().add(items);
+        TextField weight = new TextField();
+        weight.setHeightFull();
+        inventoryRow.addDataCell().add(weight);
+        
+        return new HorizontalLayout(inventory);
     }
 }
