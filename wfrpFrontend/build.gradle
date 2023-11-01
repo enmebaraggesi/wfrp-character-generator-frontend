@@ -26,6 +26,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.vaadin.stefan/html-table
     implementation 'org.vaadin.stefan:html-table:1.2.0'
     implementation 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

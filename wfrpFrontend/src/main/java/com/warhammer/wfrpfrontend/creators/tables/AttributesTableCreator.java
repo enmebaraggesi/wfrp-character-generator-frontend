@@ -1,0 +1,97 @@
+package com.warhammer.wfrpfrontend.creators.tables;
+
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import org.springframework.stereotype.Service;
+import org.vaadin.stefan.table.*;
+
+@Service
+public class AttributesTableCreator {
+    
+    public HorizontalLayout produceAttributesTable() {
+        Table attributes = new Table();
+        TableRow attrTitles = attributes.addRow();
+        TableHeaderCell attr = attrTitles.addHeaderCell();
+        attr.setText("CECHY");
+        attr.setColSpan(11);
+        TableRow attrNames = attributes.addRow();
+        attrNames.addHeaderCell();
+        attrNames.addHeaderCell().setText("WW");
+        attrNames.addHeaderCell().setText("US");
+        attrNames.addHeaderCell().setText("S");
+        attrNames.addHeaderCell().setText("Wt");
+        attrNames.addHeaderCell().setText("I");
+        attrNames.addHeaderCell().setText("Zw");
+        attrNames.addHeaderCell().setText("Zr");
+        attrNames.addHeaderCell().setText("Int");
+        attrNames.addHeaderCell().setText("SW");
+        attrNames.addHeaderCell().setText("Ogd");
+        TableRow attrCellsStart = attributes.addRow();
+        attrCellsStart.addHeaderCell().setText("Początkowe");
+        TextField wwStart = new TextField();
+        attrCellsStart.addDataCell().add(wwStart);
+        TextField usStart = new TextField();
+        attrCellsStart.addDataCell().add(usStart);
+        TextField sStart = new TextField();
+        attrCellsStart.addDataCell().add(sStart);
+        TextField wtStart = new TextField();
+        attrCellsStart.addDataCell().add(wtStart);
+        TextField iStart = new TextField();
+        attrCellsStart.addDataCell().add(iStart);
+        TextField zwStart = new TextField();
+        attrCellsStart.addDataCell().add(zwStart);
+        TextField zrStart = new TextField();
+        attrCellsStart.addDataCell().add(zrStart);
+        TextField inStart = new TextField();
+        attrCellsStart.addDataCell().add(inStart);
+        TextField swStart = new TextField();
+        attrCellsStart.addDataCell().add(swStart);
+        TextField ogdStart = new TextField();
+        attrCellsStart.addDataCell().add(ogdStart);
+        TableRow attrCellsDevelop = attributes.addRow();
+        attrCellsDevelop.addHeaderCell().setText("Rozwinięcia");
+        TextField wwDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(wwDevelop);
+        TextField usDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(usDevelop);
+        TextField sDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(sDevelop);
+        TextField wtDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(wtDevelop);
+        TextField iDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(iDevelop);
+        TextField zwDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(zwDevelop);
+        TextField zrDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(zrDevelop);
+        TextField inDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(inDevelop);
+        TextField swDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(swDevelop);
+        TextField ogdDevelop = new TextField();
+        attrCellsDevelop.addDataCell().add(ogdDevelop);
+        TableRow attrCellsFinal = attributes.addRow();
+        attrCellsFinal.addHeaderCell().setText("Aktualne");
+        TextField wwFinal = new TextField();
+        attrCellsFinal.addDataCell().add(wwFinal);
+        TextField usFinal = new TextField();
+        attrCellsFinal.addDataCell().add(usFinal);
+        TextField sFinal = new TextField();
+        attrCellsFinal.addDataCell().add(sFinal);
+        TextField wtFinal = new TextField();
+        attrCellsFinal.addDataCell().add(wtFinal);
+        TextField iFinal = new TextField();
+        attrCellsFinal.addDataCell().add(iFinal);
+        TextField zwFinal = new TextField();
+        attrCellsFinal.addDataCell().add(zwFinal);
+        TextField zrFinal = new TextField();
+        attrCellsFinal.addDataCell().add(zrFinal);
+        TextField inFinal = new TextField();
+        attrCellsFinal.addDataCell().add(inFinal);
+        TextField swFinal = new TextField();
+        attrCellsFinal.addDataCell().add(swFinal);
+        TextField ogdFinal = new TextField();
+        attrCellsFinal.addDataCell().add(ogdFinal);
+        return new HorizontalLayout(attributes);
+    }
+}
