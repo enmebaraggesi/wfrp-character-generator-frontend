@@ -12,11 +12,13 @@ import java.util.List;
 @Service
 public class ProfessionCreator {
     
+    private final ProfessionsController controller;
     private final ComboBox<String> professionField;
     private final TextField statusField;
     private final TextField classField;
     
     public ProfessionCreator(ProfessionsController controller) {
+        this.controller = controller;
         professionField = new ComboBox<>("PROFESJA");
         List<String> professionsNames = controller.getProfessionsNames();
         professionField.setItems(professionsNames);
@@ -28,5 +30,13 @@ public class ProfessionCreator {
         classField = new TextField("KLASA");
         classField.setWidth("200px");
         classField.setEnabled(false);
+    }
+    
+    public void updateStatus(String name) {
+        statusField.setValue(controller.getStatus(name));
+    }
+    
+    public void updateClass(String name) {
+        classField.setValue(controller.getClassName(name));
     }
 }

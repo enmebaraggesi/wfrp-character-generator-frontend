@@ -22,4 +22,22 @@ public class ProfessionsController {
                           .sorted()
                           .toList();
     }
+    
+    public String getClassName(String professionName) {
+        List<ProfessionDto> professions = client.getProfessions();
+        List<String> list = professions.stream()
+                                       .filter(professionDto -> professionDto.name().equals(professionName))
+                                       .map(ProfessionDto::classField)
+                                       .toList();
+        return list.get(0);
+    }
+    
+    public String getStatus(String professionName) {
+        List<ProfessionDto> professions = client.getProfessions();
+        List<String> list = professions.stream()
+                                       .filter(professionDto -> professionDto.name().equals(professionName))
+                                       .map(ProfessionDto::status)
+                                       .toList();
+        return list.get(0);
+    }
 }

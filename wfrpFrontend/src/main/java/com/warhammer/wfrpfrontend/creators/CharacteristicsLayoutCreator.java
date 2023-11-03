@@ -43,6 +43,14 @@ public class CharacteristicsLayoutCreator {
         hairColorsField = hairColorsCreator.getHairColorsField();
         HorizontalLayout lowerSide = new HorizontalLayout(FlexComponent.Alignment.CENTER, ageField, heightField,
                                                           eyeColorsField, hairColorsField);
+        raceField.addValueChangeListener(event -> {
+            ageHeightCreator.generateAge(raceField.getValue());
+            ageHeightCreator.generateHeight(raceField.getValue());
+        });
+        professionsField.addValueChangeListener(event -> {
+            professionCreator.updateClass(professionsField.getValue());
+            professionCreator.updateStatus(professionsField.getValue());
+        });
         return new VerticalLayout(upperSide, lowerSide);
     }
 }

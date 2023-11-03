@@ -5,6 +5,8 @@ import com.warhammer.wfrpfrontend.creators.tables.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TablesLayoutCreator {
@@ -19,10 +21,11 @@ public class TablesLayoutCreator {
     private final InventoryTableCreator inventoryTableCreator;
     
     public VerticalLayout prepareTablesLayout() {
-        HorizontalLayout attributesTable = attributesTableCreator.produceAttributesTable();
-        VerticalLayout pointsTable = pointsTableCreator.producePointsTable();
-        HorizontalLayout basicSkillsTables = basicSkillsTableCreator.produceBasicSkillsTables();
-        HorizontalLayout advancedSkillsTable = advancedSkillsTableCreator.produceAdvancedSkillsTable();
+        HorizontalLayout attributesTable = attributesTableCreator.produceAttributesTable(basicSkillsTableCreator);
+        List<String> finalAttributes = attributesTableCreator.getFinalAttributes();
+        HorizontalLayout pointsTable = pointsTableCreator.producePointsTable();
+        HorizontalLayout basicSkillsTables = basicSkillsTableCreator.produceBasicSkillsTables(finalAttributes);
+        HorizontalLayout advancedSkillsTable = advancedSkillsTableCreator.produceAdvancedSkillsTable(finalAttributes);
         HorizontalLayout talentsTable = talentsTableCreator.produceTalentsTable();
         HorizontalLayout weaponsTable = weaponsTableCreator.produceWeaponsTable();
         HorizontalLayout armorsTable = armorsTableCreator.produceArmorsTable();

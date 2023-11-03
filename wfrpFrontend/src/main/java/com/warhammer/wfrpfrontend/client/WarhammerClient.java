@@ -16,11 +16,11 @@ public class WarhammerClient {
     
     private final RestTemplate restTemplate;
     
-    @Value("${warhammer.api.endpoint}")
+    @Value("${warhammer.api.url}")
     private String url;
     
     public List<RaceDto> getRaces() {
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/races")
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "races")
                                       .build()
                                       .encode()
                                       .toUri();
@@ -33,7 +33,7 @@ public class WarhammerClient {
     
     public List<EyeColorDto> getEyeColors(String race) {
         String raceComponent = getRaceComponent(race);
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/eyes/" + raceComponent)
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "eyes/" + raceComponent)
                                       .build()
                                       .encode()
                                       .toUri();
@@ -46,7 +46,7 @@ public class WarhammerClient {
     
     public List<HairColorDto> getHairColors(String race) {
         String raceComponent = getRaceComponent(race);
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/hair/" + raceComponent)
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "hair/" + raceComponent)
                                       .build()
                                       .encode()
                                       .toUri();
@@ -60,25 +60,25 @@ public class WarhammerClient {
     private static String getRaceComponent(String race) {
         switch (race) {
             case "Krasnolud" -> {
-                return  "dwarfs";
+                return "dwarfs";
             }
             case "Niziołek" -> {
-                return  "halflings";
+                return "halflings";
             }
             case "Wysoki elf" -> {
-                return  "helves";
+                return "helves";
             }
             case "Leśny elf" -> {
-                return  "welves";
+                return "welves";
             }
             default -> {
-                return  "humans";
+                return "humans";
             }
         }
     }
     
     public List<ProfessionDto> getProfessions() {
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/professions")
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "professions")
                                       .build()
                                       .encode()
                                       .toUri();
@@ -91,7 +91,7 @@ public class WarhammerClient {
     
     public AgeDto getAge(String race) {
         String raceComponent = getRaceComponent(race);
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/age/" + raceComponent)
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "age/" + raceComponent)
                                       .build()
                                       .encode()
                                       .toUri();
@@ -100,10 +100,21 @@ public class WarhammerClient {
     
     public HeightDto getHeight(String race) {
         String raceComponent = getRaceComponent(race);
-        URI uri = UriComponentsBuilder.fromHttpUrl(url + "/height/" + raceComponent)
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "height/" + raceComponent)
                                       .build()
                                       .encode()
                                       .toUri();
-         return restTemplate.getForObject(uri, HeightDto.class);
+        return restTemplate.getForObject(uri, HeightDto.class);
+    }
+    
+    public List<SkillDto> getAdvancedSkills() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "skills/advanced")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        SkillDto[] skillDtos = restTemplate.getForObject(uri, SkillDto[].class);
+        return Optional.ofNullable(skillDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
     }
 }
