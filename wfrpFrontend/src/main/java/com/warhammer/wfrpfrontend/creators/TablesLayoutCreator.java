@@ -29,20 +29,15 @@ public class TablesLayoutCreator {
         HorizontalLayout talentsTable = talentsTableCreator.produceTalentsTable();
         HorizontalLayout weaponsTable = weaponsTableCreator.produceWeaponsTable();
         HorizontalLayout armorsTable = armorsTableCreator.produceArmorsTable();
-        HorizontalLayout inventoryTable = inventoryTableCreator.produceInventoryTable();
+        HorizontalLayout inventoryTable = inventoryTableCreator.produceInventoryAndHirelingsTables();
         
-        HorizontalLayout attributesAndPoints = new HorizontalLayout(FlexComponent.Alignment.CENTER,
-                                                                    attributesTable, pointsTable);
-        attributesAndPoints.setSizeFull();
-        basicSkillsTables.setSizeFull();
-        HorizontalLayout advancedSkillsAndTalents = new HorizontalLayout(FlexComponent.Alignment.CENTER,
-                                                                         advancedSkillsTable, talentsTable);
-        advancedSkillsAndTalents.setSizeFull();
-        weaponsTable.setSizeFull();
-        armorsTable.setSizeFull();
-        inventoryTable.setSizeFull();
-        
-        return new VerticalLayout(FlexComponent.JustifyContentMode.CENTER, attributesAndPoints, basicSkillsTables,
-                                  advancedSkillsAndTalents, weaponsTable, armorsTable, inventoryTable);
+        HorizontalLayout attributesAndPointsLayout =
+                new HorizontalLayout(FlexComponent.Alignment.CENTER, attributesTable, pointsTable);
+        HorizontalLayout skillsLayout =
+                new HorizontalLayout(FlexComponent.Alignment.CENTER, basicSkillsTables, advancedSkillsTable);
+        HorizontalLayout talentsAndInventoryLayout =
+                new HorizontalLayout(FlexComponent.Alignment.CENTER, talentsTable, inventoryTable);
+        return new VerticalLayout(FlexComponent.JustifyContentMode.CENTER, attributesAndPointsLayout,
+                                  skillsLayout, weaponsTable, armorsTable, talentsAndInventoryLayout);
     }
 }

@@ -22,4 +22,8 @@ public class SkillsController {
                              .map(SkillDto::name)
                              .collect(Collectors.toList());
     }
+    
+    public List<SkillDto> getAdvancedSkills() {
+        return client.getAdvancedSkills();
+    }
 }

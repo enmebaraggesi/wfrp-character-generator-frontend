@@ -1,29 +1,47 @@
 package com.warhammer.wfrpfrontend.creators.characteristics;
 
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.AppearanceController;
 import com.warhammer.wfrpfrontend.controller.NamesController;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Getter
+@RequiredArgsConstructor
 @Service
 public class RaceCreator {
     
-    private final ComboBox<String> raceField;
-    private final TextField nameText;
+    private final AppearanceController appearanceController;
+    private final NamesController namesController;
     
-    public RaceCreator(AppearanceController appearanceController, NamesController namesController) {
-        raceField = new ComboBox<>("RASA");
+    public HorizontalLayout produceNameAndRace(AgeHeightCreator ageHeightCreator) {
+        TextField nameField = makeNameField();
+        ComboBox<String> raceComboBox = makeRaceComboBox();
+        raceComboBox.addValueChangeListener(event -> {
+            ageHeightCreator.generateHeight(raceComboBox.getValue());
+            ageHeightCreator.generateAge(raceComboBox.getValue());
+            generateName(nameField);
+        });
+        return new HorizontalLayout(nameField, raceComboBox);
+    }
+    
+    private void generateName(TextField nameField) {
+        nameField.setValue(namesController.getName());
+    }
+    
+    private TextField makeNameField() {
+        TextField nameField = new TextField("IMIĘ");
+        nameField.setWidth("300px");
+        return nameField;
+    }
+    
+    private ComboBox<String> makeRaceComboBox() {
+        ComboBox<String> raceField = new ComboBox<>("RASA");
         List<String> racesNames = appearanceController.getRaces();
         raceField.setItems(racesNames);
-        
-        nameText = new TextField("IMIĘ");
-        nameText.setWidth("300px");
-        String name = "Grzegorz Mucha";
-        nameText.setValue(name);
+        return raceField;
     }
 }

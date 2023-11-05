@@ -1,10 +1,13 @@
-package com.warhammer.wfrpfrontend.dto;
+package com.warhammer.wfrpfrontend.dto.name;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record IdDto(@JsonProperty("first") String first,
-                    @JsonProperty("last") String last) {
+public class Result {
     
+    @JsonProperty("name")
+    Name name;
 }

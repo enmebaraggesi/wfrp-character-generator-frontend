@@ -117,4 +117,59 @@ public class WarhammerClient {
                        .map(Arrays::asList)
                        .orElse(Collections.emptyList());
     }
+    
+    public List<InventoryDto> getInventory() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "inventory")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        InventoryDto[] inventoryDtos = restTemplate.getForObject(uri, InventoryDto[].class);
+        return Optional.ofNullable(inventoryDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
+    }
+    
+    public List<HirelingDto> getHirelings() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "hirelings")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        HirelingDto[] hirelingDtos = restTemplate.getForObject(uri, HirelingDto[].class);
+        return Optional.ofNullable(hirelingDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
+    }
+    
+    public List<TalentDto> getTalents() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "talents")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        TalentDto[] talentDtos = restTemplate.getForObject(uri, TalentDto[].class);
+        return Optional.ofNullable(talentDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
+    }
+    
+    public List<WeaponDto> getWeapons() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "weapons")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        WeaponDto[] weaponDtos = restTemplate.getForObject(uri, WeaponDto[].class);
+        return Optional.ofNullable(weaponDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
+    }
+    
+    public List<ArmorDto> getArmors() {
+        URI uri = UriComponentsBuilder.fromHttpUrl(url + "armors")
+                                      .build()
+                                      .encode()
+                                      .toUri();
+        ArmorDto[] armorDtos = restTemplate.getForObject(uri, ArmorDto[].class);
+        return Optional.ofNullable(armorDtos)
+                       .map(Arrays::asList)
+                       .orElse(Collections.emptyList());
+    }
 }

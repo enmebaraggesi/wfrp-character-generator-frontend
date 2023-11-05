@@ -1,14 +1,29 @@
 package com.warhammer.wfrpfrontend.creators.tables;
 
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.warhammer.wfrpfrontend.controller.WeaponsController;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
+@RequiredArgsConstructor
 @Service
 public class WeaponsTableCreator {
     
+    private final WeaponsController controller;
+    
     public HorizontalLayout produceWeaponsTable() {
+        Table weaponry = makeWeaponsTableAndHeaders();
+        makeTableRow(weaponry);
+        makeTableRow(weaponry);
+        makeTableRow(weaponry);
+        makeTableRow(weaponry);
+        return new HorizontalLayout(weaponry);
+    }
+    
+    private Table makeWeaponsTableAndHeaders() {
         Table weaponry = new Table();
         TableRow tableName = weaponry.addRow();
         TableHeaderCell tableNameCell = tableName.addHeaderCell();
@@ -22,63 +37,44 @@ public class WeaponsTableCreator {
         titlesRow.addHeaderCell().setText("Zasięg");
         titlesRow.addHeaderCell().setText("Obrażenia");
         titlesRow.addHeaderCell().setText("Cechy");
-        
+        return weaponry;
+    }
+    
+    private void makeTableRow(Table weaponry) {
         TableRow row1 = weaponry.addRow();
-        TextField name1 = new TextField();
-        row1.addDataCell().add(name1);
-        TextField cat1 = new TextField();
-        row1.addDataCell().add(cat1);
-        TextField weight1 = new TextField();
-        row1.addDataCell().add(weight1);
-        TextField range1 = new TextField();
-        row1.addDataCell().add(range1);
-        TextField damage1 = new TextField();
-        row1.addDataCell().add(damage1);
-        TextField traits1 = new TextField();
-        row1.addDataCell().add(traits1);
-        
-        TableRow row2 = weaponry.addRow();
-        TextField name2 = new TextField();
-        row2.addDataCell().add(name2);
-        TextField cat2 = new TextField();
-        row2.addDataCell().add(cat2);
-        TextField weight2 = new TextField();
-        row2.addDataCell().add(weight2);
-        TextField range2 = new TextField();
-        row2.addDataCell().add(range2);
-        TextField damage2 = new TextField();
-        row2.addDataCell().add(damage2);
-        TextField traits2 = new TextField();
-        row2.addDataCell().add(traits2);
-        
-        TableRow row3 = weaponry.addRow();
-        TextField name3 = new TextField();
-        row3.addDataCell().add(name3);
-        TextField cat3 = new TextField();
-        row3.addDataCell().add(cat3);
-        TextField weight3 = new TextField();
-        row3.addDataCell().add(weight3);
-        TextField range3 = new TextField();
-        row3.addDataCell().add(range3);
-        TextField damage3 = new TextField();
-        row3.addDataCell().add(damage3);
-        TextField traits3 = new TextField();
-        row3.addDataCell().add(traits3);
-        
-        TableRow row4 = weaponry.addRow();
-        TextField name4 = new TextField();
-        row4.addDataCell().add(name4);
-        TextField cat4 = new TextField();
-        row4.addDataCell().add(cat4);
-        TextField weight4 = new TextField();
-        row4.addDataCell().add(weight4);
-        TextField range4 = new TextField();
-        row4.addDataCell().add(range4);
-        TextField damage4 = new TextField();
-        row4.addDataCell().add(damage4);
-        TextField traits4 = new TextField();
-        row4.addDataCell().add(traits4);
-        
-        return new HorizontalLayout(weaponry);
+        ComboBox<String> name = new ComboBox<>();
+        name.setWidth("250px");
+        name.setItems(controller.getWeaponsNames());
+        row1.addDataCell().add(name);
+        TextField category = new TextField();
+        category.setWidth("150px");
+        category.setEnabled(false);
+        row1.addDataCell().add(category);
+        TextField weight = new TextField();
+        weight.setEnabled(false);
+        weight.setWidth("80px");
+        row1.addDataCell().add(weight);
+        TextField range = new TextField();
+        range.setEnabled(false);
+        range.setWidth("80px");
+        row1.addDataCell().add(range);
+        TextField damage = new TextField();
+        damage.setEnabled(false);
+        damage.setWidth("100px");
+        row1.addDataCell().add(damage);
+        TextField traits = new TextField();
+        traits.setEnabled(false);
+        traits.setWidth("400px");
+        row1.addDataCell().add(traits);
+        name.addValueChangeListener(event -> updateValues(name.getValue(), category, weight, range, damage, traits));
+    }
+    
+    private void updateValues(String name, TextField category, TextField weight, TextField range, TextField damage,
+                              TextField traits) {
+        category.setValue(controller.getCategoryByName(name));
+        weight.setValue(controller.getWeightByName(name));
+        range.setValue(controller.getRangeByName(name));
+        damage.setValue(controller.getDamageByName(name));
+        traits.setValue(controller.getTraitsByName(name));
     }
 }

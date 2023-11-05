@@ -10,7 +10,10 @@ public class WarhammerView extends VerticalLayout {
     
     public WarhammerView(TablesLayoutCreator tables, CharacteristicsLayoutCreator characteristics) {
         VerticalLayout characterDescription = characteristics.prepareCharacterDescription();
+        characterDescription.setAlignItems(Alignment.CENTER);
         VerticalLayout tablesLayout = tables.prepareTablesLayout();
+        tablesLayout.setAlignItems(Alignment.CENTER);
         add(characterDescription, tablesLayout);
+        this.getStyle().setBackground("PapayaWhip");
     }
 }
