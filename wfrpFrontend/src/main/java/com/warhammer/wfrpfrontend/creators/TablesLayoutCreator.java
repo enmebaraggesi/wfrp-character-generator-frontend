@@ -5,8 +5,6 @@ import com.warhammer.wfrpfrontend.creators.tables.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class TablesLayoutCreator {
@@ -18,18 +16,19 @@ public class TablesLayoutCreator {
     private final TalentsTableCreator talentsTableCreator;
     private final WeaponsTableCreator weaponsTableCreator;
     private final ArmorsTableCreator armorsTableCreator;
-    private final InventoryTableCreator inventoryTableCreator;
+    private final InventoryTablesLayoutCreator inventoryTablesLayoutCreator;
     
     public VerticalLayout prepareTablesLayout() {
         HorizontalLayout attributesTable = attributesTableCreator.produceAttributesTable(basicSkillsTableCreator);
-        List<String> finalAttributes = attributesTableCreator.getFinalAttributes();
         HorizontalLayout pointsTable = pointsTableCreator.producePointsTable();
-        HorizontalLayout basicSkillsTables = basicSkillsTableCreator.produceBasicSkillsTables(finalAttributes);
-        HorizontalLayout advancedSkillsTable = advancedSkillsTableCreator.produceAdvancedSkillsTable(finalAttributes);
-        HorizontalLayout talentsTable = talentsTableCreator.produceTalentsTable();
-        HorizontalLayout weaponsTable = weaponsTableCreator.produceWeaponsTable();
-        HorizontalLayout armorsTable = armorsTableCreator.produceArmorsTable();
-        HorizontalLayout inventoryTable = inventoryTableCreator.produceInventoryAndHirelingsTables();
+        basicSkillsTableCreator.setFinalAttributes(attributesTableCreator.getFinalAttributesList());
+        HorizontalLayout basicSkillsTables = basicSkillsTableCreator.produceTable();
+        advancedSkillsTableCreator.setFinalAttributes(attributesTableCreator.getFinalAttributesList());
+        HorizontalLayout advancedSkillsTable = advancedSkillsTableCreator.produceTable();
+        HorizontalLayout talentsTable = talentsTableCreator.produceTable();
+        HorizontalLayout weaponsTable = weaponsTableCreator.produceTable();
+        HorizontalLayout armorsTable = armorsTableCreator.produceTable();
+        HorizontalLayout inventoryTable = inventoryTablesLayoutCreator.produceTable();
         
         HorizontalLayout attributesAndPointsLayout =
                 new HorizontalLayout(FlexComponent.Alignment.CENTER, attributesTable, pointsTable);

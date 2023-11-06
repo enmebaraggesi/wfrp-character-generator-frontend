@@ -4,43 +4,35 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.SkillsController;
-import com.warhammer.wfrpfrontend.dto.SkillDto;
+import com.warhammer.wfrpfrontend.dto.skill.SkillDto;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AdvancedSkillsTableCreator {
+@Getter
+public class AdvancedSkillsTableCreator extends SkillTableCreator {
     
-    private List<String> finalAttributes;
     private final List<SkillDto> advancedSkills;
+    private final List<ComboBox<String>> skillNameComboBoxes = new ArrayList<>();
+    private final TextField[][] skillTextFields = new TextField[13][4];
     
     public AdvancedSkillsTableCreator(SkillsController controller) {
-        advancedSkills = controller.getAdvancedSkills();
+        this.advancedSkills = controller.getAdvancedSkills();
     }
     
-    public HorizontalLayout produceAdvancedSkillsTable(List<String> finalAttributes) {
-        this.finalAttributes = finalAttributes;
-        Table advancedSkillsTable = makeTableWithHeaders();
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        makeTableRow(advancedSkillsTable);
-        
+    public HorizontalLayout produceTable() {
+        Table advancedSkillsTable = makeTableAndHeaders();
+        for (int i = 0; i < 13; i++) {
+            makeTableRow(advancedSkillsTable, i);
+        }
         return new HorizontalLayout(advancedSkillsTable);
     }
     
-    private Table makeTableWithHeaders() {
+    private Table makeTableAndHeaders() {
         Table advancedSkillsTable = new Table();
         TableRow advancedSkillsTitle = advancedSkillsTable.addRow();
         TableHeaderCell skillsTitle = advancedSkillsTitle.addHeaderCell();
@@ -57,81 +49,52 @@ public class AdvancedSkillsTableCreator {
         return advancedSkillsTable;
     }
     
-    private void makeTableRow(Table advancedSkillsTable) {
+    private void makeTableRow(Table advancedSkillsTable, int i) {
         TableRow tableRow = advancedSkillsTable.addRow();
+        List<String> skillNames = advancedSkills.stream()
+                                                .map(SkillDto::name)
+                                                .toList();
         ComboBox<String> skillName = new ComboBox<>();
-        List<String> names = advancedSkills.stream()
-                                           .map(SkillDto::name)
-                                           .toList();
-        skillName.setItems(names);
+        skillName.setItems(skillNames);
         skillName.setWidth("250px");
         tableRow.addDataCell().add(skillName);
+        skillNameComboBoxes.add(skillName);
         TextField skillAttribute = new TextField();
         skillAttribute.setEnabled(false);
         skillAttribute.setWidth("50px");
         tableRow.addDataCell().add(skillAttribute);
+        skillTextFields[i][0] = skillAttribute;
         TextField skillValue = new TextField();
         skillValue.setEnabled(false);
         skillValue.setWidth("50px");
         tableRow.addDataCell().add(skillValue);
+        skillTextFields[i][1] = skillValue;
         TextField skillDevelopment = new TextField();
         skillDevelopment.setValue("0");
         skillDevelopment.setWidth("50px");
         tableRow.addDataCell().add(skillDevelopment);
+        skillTextFields[i][2] = skillDevelopment;
         TextField skillSum = new TextField();
         skillSum.setEnabled(false);
         skillSum.setWidth("50px");
         tableRow.addDataCell().add(skillSum);
-        skillName.addValueChangeListener(event -> updateRowValues(skillName.getValue(), skillAttribute, skillValue, skillDevelopment, skillSum));
-        skillDevelopment.addValueChangeListener(event -> updateRowValues(skillName.getValue(), skillAttribute, skillValue, skillDevelopment, skillSum));
+        skillTextFields[i][3] = skillSum;
+        
+        skillName.addValueChangeListener(
+                event -> updateRowValues(skillName.getValue(), skillAttribute, skillValue, skillDevelopment, skillSum));
+        skillDevelopment.addValueChangeListener(
+                event -> updateRowValues(skillName.getValue(), skillAttribute, skillValue, skillDevelopment, skillSum));
     }
     
-    private void updateRowValues(String skillName, TextField skillAttribute, TextField skillValue, TextField skillDevelopment, TextField skillSum) {
-        for (SkillDto dto : advancedSkills) {
-            if (dto.name().equals(skillName)) {
-                skillAttribute.setValue(dto.attribute());
-                String finalAttributeValue = getFinalAttributeValue(dto.attribute().toLowerCase());
-                skillValue.setValue(finalAttributeValue);
-                String developmentValue = skillDevelopment.getValue();
-                int sum = Integer.parseInt(finalAttributeValue) + Integer.parseInt(developmentValue);
+    private void updateRowValues(String skillName, TextField skillAttribute, TextField skillValue,
+                                 TextField skillDevelopment, TextField skillSum) {
+        for (SkillDto skillDto : advancedSkills) {
+            if (skillDto.name().equals(skillName)) {
+                skillAttribute.setValue(skillDto.attribute());
+                skillValue.setValue(getFinalAttributeValue(skillDto.attribute()));
+                int sum = Integer.parseInt(skillValue.getValue()) + Integer.parseInt(skillDevelopment.getValue());
                 skillSum.setValue(String.valueOf(sum));
             }
         }
     }
-    
-    private String getFinalAttributeValue(String attribute) {
-        switch (attribute) {
-            default -> {
-                return finalAttributes.get(0);
-            }
-            case "us" -> {
-                return finalAttributes.get(1);
-            }
-            case "s" -> {
-                return finalAttributes.get(2);
-            }
-            case "wt" -> {
-                return finalAttributes.get(3);
-            }
-            case "i" -> {
-                return finalAttributes.get(4);
-            }
-            case "zw" -> {
-                return finalAttributes.get(5);
-            }
-            case "zr" -> {
-                return finalAttributes.get(6);
-            }
-            case "int" -> {
-                return finalAttributes.get(7);
-            }
-            case "sw" -> {
-                return finalAttributes.get(8);
-            }
-            case "ogd" -> {
-                return finalAttributes.get(9);
-            }
-        }
-    }
-    
 }

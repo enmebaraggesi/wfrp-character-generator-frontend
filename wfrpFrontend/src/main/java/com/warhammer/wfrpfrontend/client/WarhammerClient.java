@@ -1,6 +1,17 @@
 package com.warhammer.wfrpfrontend.client;
 
-import com.warhammer.wfrpfrontend.dto.*;
+import com.warhammer.wfrpfrontend.dto.appearance.AgeDto;
+import com.warhammer.wfrpfrontend.dto.appearance.HeightDto;
+import com.warhammer.wfrpfrontend.dto.appearance.RaceDto;
+import com.warhammer.wfrpfrontend.dto.armor.ArmorDto;
+import com.warhammer.wfrpfrontend.dto.appearance.EyeColorDto;
+import com.warhammer.wfrpfrontend.dto.appearance.HairColorDto;
+import com.warhammer.wfrpfrontend.dto.inventory.HirelingDto;
+import com.warhammer.wfrpfrontend.dto.inventory.InventoryDto;
+import com.warhammer.wfrpfrontend.dto.profession.ProfessionDto;
+import com.warhammer.wfrpfrontend.dto.skill.SkillDto;
+import com.warhammer.wfrpfrontend.dto.talent.TalentDto;
+import com.warhammer.wfrpfrontend.dto.weapon.WeaponDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -55,26 +66,6 @@ public class WarhammerClient {
         return Optional.ofNullable(hairColorDtos)
                        .map(Arrays::asList)
                        .orElse(Collections.emptyList());
-    }
-    
-    private static String getRaceComponent(String race) {
-        switch (race) {
-            case "Krasnolud" -> {
-                return "dwarfs";
-            }
-            case "Niziołek" -> {
-                return "halflings";
-            }
-            case "Wysoki elf" -> {
-                return "helves";
-            }
-            case "Leśny elf" -> {
-                return "welves";
-            }
-            default -> {
-                return "humans";
-            }
-        }
     }
     
     public List<ProfessionDto> getProfessions() {
@@ -171,5 +162,25 @@ public class WarhammerClient {
         return Optional.ofNullable(armorDtos)
                        .map(Arrays::asList)
                        .orElse(Collections.emptyList());
+    }
+    
+    private static String getRaceComponent(String race) {
+        switch (race) {
+            case "Krasnolud" -> {
+                return "dwarfs";
+            }
+            case "Niziołek" -> {
+                return "halflings";
+            }
+            case "Wysoki elf" -> {
+                return "helves";
+            }
+            case "Leśny elf" -> {
+                return "welves";
+            }
+            default -> {
+                return "humans";
+            }
+        }
     }
 }

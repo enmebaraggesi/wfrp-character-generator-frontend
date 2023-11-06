@@ -4,21 +4,26 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.ProfessionsController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+
 @Service
+@Getter
+@RequiredArgsConstructor
 public class ProfessionCreator {
     
     private final ProfessionsController controller;
     
-    public HorizontalLayout produceProffesionFields() {
-        ComboBox<String> professionComboBox = makeProfessionComboBox();
-        TextField statusField = makeStatusField();
-        TextField classField = makeClassField();
-        professionComboBox.addValueChangeListener(
-                event -> updateValues(professionComboBox.getValue(), statusField, classField));
+    private ComboBox<String> professionComboBox;
+    private TextField statusField;
+    private TextField classField;
+    
+    public HorizontalLayout produceProfessionFields() {
+        makeProfessionComboBox();
+        makeStatusField();
+        makeClassField();
         return new HorizontalLayout(classField, professionComboBox, statusField);
     }
     
@@ -27,23 +32,22 @@ public class ProfessionCreator {
         classField.setValue(controller.getClassName(name));
     }
     
-    private ComboBox<String> makeProfessionComboBox() {
-        ComboBox<String> professionField = new ComboBox<>("PROFESJA");
-        professionField.setItems(controller.getProfessionsNames());
-        return professionField;
+    private void makeProfessionComboBox() {
+        professionComboBox = new ComboBox<>("PROFESJA");
+        professionComboBox.setItems(controller.getProfessionsNames());
+        professionComboBox.addValueChangeListener(
+                event -> updateValues(professionComboBox.getValue(), statusField, classField));
     }
     
-    private TextField makeStatusField() {
-        TextField statusField = new TextField("STATUS");
+    private void makeStatusField() {
+        statusField = new TextField("STATUS");
         statusField.setWidth("150");
         statusField.setEnabled(false);
-        return statusField;
     }
     
-    private TextField makeClassField() {
-        TextField classField = new TextField("KLASA");
+    private void makeClassField() {
+        classField = new TextField("KLASA");
         classField.setWidth("200px");
         classField.setEnabled(false);
-        return classField;
     }
 }

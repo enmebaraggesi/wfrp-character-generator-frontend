@@ -1,7 +1,6 @@
 package com.warhammer.wfrpfrontend.controller;
 
-import com.warhammer.wfrpfrontend.client.WarhammerClient;
-import com.warhammer.wfrpfrontend.dto.*;
+import com.warhammer.wfrpfrontend.service.AppearanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,37 +12,25 @@ import java.util.List;
 @CrossOrigin("*")
 public class AppearanceController {
     
-    private final WarhammerClient client;
+    private final AppearanceService service;
     
     public List<String> getRaces() {
-        List<RaceDto> raceDtos = client.getRaces();
-        return raceDtos.stream()
-                       .map(RaceDto::race)
-                       .sorted()
-                       .toList();
+        return service.getRacesNamesList();
     }
     
     public List<String> getEyeColors(String race) {
-        List<EyeColorDto> eyeColors = client.getEyeColors(race);
-        return eyeColors.stream()
-                        .map(EyeColorDto::color)
-                        .sorted()
-                        .toList();
+        return service.getEyeColorsListByRace(race);
     }
     
     public List<String> getHairColors(String race) {
-        List<HairColorDto> hairColors = client.getHairColors(race);
-        return hairColors.stream()
-                         .map(HairColorDto::color)
-                         .sorted()
-                         .toList();
+        return service.getHairColorsListByRace(race);
     }
     
     public String getGeneratedAge(String race) {
-        return client.getAge(race).age();
+        return service.getGeneratedAgeByRace(race);
     }
     
     public String getGeneratedHeight(String race) {
-        return client.getHeight(race).height();
+        return service.getGeneratedHeightByRace(race);
     }
 }

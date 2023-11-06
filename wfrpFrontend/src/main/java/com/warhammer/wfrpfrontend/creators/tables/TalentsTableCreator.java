@@ -4,30 +4,32 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.TalentsController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
-@RequiredArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class TalentsTableCreator {
+@Getter
+@RequiredArgsConstructor
+public class TalentsTableCreator extends Tables {
     
     private final TalentsController controller;
+    private final List<ComboBox<String>> talentNameComboBoxes = new ArrayList<>();
+    private final List<TextField> talentTextFields = new ArrayList<>();
     
-    public HorizontalLayout produceTalentsTable() {
-        Table talents = makeTalentsTableWithHeaders();
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
-        makeTableRow(talents);
+    @Override
+    public HorizontalLayout produceTable() {
+        Table talents = makeTableAndHeaders();
+        makeNumberOfTableRows(talents, 8);
         return new HorizontalLayout(talents);
     }
     
-    private Table makeTalentsTableWithHeaders() {
+    @Override
+    protected Table makeTableAndHeaders() {
         Table talents = new Table();
         TableRow talentTitle = talents.addRow();
         TableHeaderCell talentTitleCell = talentTitle.addHeaderCell();
@@ -40,14 +42,17 @@ public class TalentsTableCreator {
         return talents;
     }
     
-    private void makeTableRow(Table talents) {
-        TableRow talentRow = talents.addRow();
+    @Override
+    protected void makeTableRow(Table table, int times) {
+        TableRow talentRow = table.addRow();
         ComboBox<String> name = new ComboBox<>();
         name.setWidth("250px");
         name.setItems(controller.getTalentsNames());
         talentRow.addDataCell().add(name);
+        talentNameComboBoxes.add(name);
         TextField level = new TextField();
         level.setWidth("50px");
         talentRow.addDataCell().add(level);
+        talentTextFields.add(level);
     }
 }

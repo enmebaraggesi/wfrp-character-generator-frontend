@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NameDto {
-    
+
     @JsonProperty("results")
-    List<Result> results;
+    List<ResultDto> results;
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Getter
 @Service
+@Getter
 public class EyeColorsCreator {
     
     private final ComboBox<String> eyeColorsField;
@@ -25,10 +25,15 @@ public class EyeColorsCreator {
         highElvesEyeColors = controller.getEyeColors("Wysoki elf");
         woodElvesEyeColors = controller.getEyeColors("Leśny elf");
         eyeColorsField = new ComboBox<>("KOLOR OCZU");
-        setEyeColorsByRace(humansEyeColors);
     }
     
-    public void setEyeColorsByRace(List<String> eyesColors) {
-        eyeColorsField.setItems(eyesColors);
+    public void setEyeColorsByRace(String race) {
+        switch (race) {
+            default -> eyeColorsField.setItems(humansEyeColors);
+            case "Krasnolud" -> eyeColorsField.setItems(dwarfsEyeColors);
+            case "Niziołek" -> eyeColorsField.setItems(halflingsEyeColors);
+            case "Wysoki elf" -> eyeColorsField.setItems(highElvesEyeColors);
+            case "Leśny elf" -> eyeColorsField.setItems(woodElvesEyeColors);
+        }
     }
 }

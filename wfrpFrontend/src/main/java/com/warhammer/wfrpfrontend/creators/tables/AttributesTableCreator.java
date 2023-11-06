@@ -12,28 +12,37 @@ import java.util.*;
 @Service
 public class AttributesTableCreator {
     
-    private final List<String> finalAttributes = new ArrayList<>();
+    private final List<String> finalAttributesList = new ArrayList<>();
+    private List<TextField> startingValuesRow;
+    private List<TextField> developments;
+    private List<TextField> finalValues;
     
     public HorizontalLayout produceAttributesTable(BasicSkillsTableCreator basicSkills) {
-        Table attributes = new Table();
-        TableRow attrTitles = attributes.addRow();
-        TableHeaderCell attr = attrTitles.addHeaderCell();
-        attr.setText("CECHY");
-        attr.setColSpan(11);
+        Table attributes = makeAttributesTable();
         setAttributesHeaders(attributes);
-        List<TextField> startingValues = setStartingValues(attributes);
-        List<TextField> developments = setDevelopments(attributes);
-        List<TextField> finalValues = setFinalValues(attributes);
-        updateFinalCell(finalValues, startingValues, developments);
-        startingValues.forEach(startingValue -> startingValue.addValueChangeListener(event -> {
-            updateFinalCell(finalValues, startingValues, developments);
-            basicSkills.updateBasicSkillsValues(finalAttributes);
+        startingValuesRow = setupStartingValuesRow(attributes);
+        developments = makeDevelopmentsRow(attributes);
+        finalValues = makeFinalValuesRow(attributes);
+        updateFinalCellsRow();
+        
+        startingValuesRow.forEach(startingValue -> startingValue.addValueChangeListener(event -> {
+            updateFinalCellsRow();
+            basicSkills.updateBasicSkillsValues();
         }));
         developments.forEach(development -> development.addValueChangeListener(event -> {
-            updateFinalCell(finalValues, startingValues, developments);
-            basicSkills.updateBasicSkillsValues(finalAttributes);
+            updateFinalCellsRow();
+            basicSkills.updateBasicSkillsValues();
         }));
         return new HorizontalLayout(attributes);
+    }
+    
+    private static Table makeAttributesTable() {
+        Table attributes = new Table();
+        TableRow attributesHeaderRow = attributes.addRow();
+        TableHeaderCell attributesTitle = attributesHeaderRow.addHeaderCell();
+        attributesTitle.setText("CECHY");
+        attributesTitle.setColSpan(11);
+        return attributes;
     }
     
     private void setAttributesHeaders(Table attributes) {
@@ -51,11 +60,10 @@ public class AttributesTableCreator {
         attrNames.addHeaderCell().setText("Ogd");
     }
     
-    private List<TextField> setStartingValues(Table attributes) {
+    private List<TextField> setupStartingValuesRow(Table attributes) {
         Random randomizer = new Random();
-        TableRow attrCellsStart = attributes.addRow();
-        attrCellsStart.addHeaderCell().setText("Początkowe");
-        
+        TableRow startingValuesRow = attributes.addRow();
+        startingValuesRow.addHeaderCell().setText("Początkowe");
         TextField wwStart = getStartingCell(randomizer);
         TextField usStart = getStartingCell(randomizer);
         TextField sStart = getStartingCell(randomizer);
@@ -66,21 +74,20 @@ public class AttributesTableCreator {
         TextField inStart = getStartingCell(randomizer);
         TextField swStart = getStartingCell(randomizer);
         TextField ogdStart = getStartingCell(randomizer);
-        List<TextField> fieldList = List.of(wwStart, usStart, sStart, wtStart, iStart, zwStart, zrStart, inStart, swStart,
-                                            ogdStart);
-        fieldList.forEach(attrCellsStart::addCells);
-        
+        List<TextField> fieldList = List.of(wwStart, usStart, sStart, wtStart, iStart,
+                                            zwStart, zrStart, inStart, swStart, ogdStart);
+        fieldList.forEach(startingValuesRow::addCells);
         return fieldList;
     }
     
     private TextField getStartingCell(Random random) {
         TextField startingCell = new TextField();
         startingCell.setWidth("50px");
-        startingCell.setValue(String.valueOf(random.nextInt(60)));
+        startingCell.setValue(String.valueOf(random.nextInt(2, 61)));
         return startingCell;
     }
     
-    private List<TextField> setDevelopments(Table attributes) {
+    private List<TextField> makeDevelopmentsRow(Table attributes) {
         TableRow attrCellsDevelop = attributes.addRow();
         attrCellsDevelop.addHeaderCell().setText("Rozwinięcia");
         
@@ -94,8 +101,8 @@ public class AttributesTableCreator {
         TextField inDevelop = getDevelopmentCell();
         TextField swDevelop = getDevelopmentCell();
         TextField ogdDevelop = getDevelopmentCell();
-        List<TextField> fieldList = List.of(wwDevelop, usDevelop, sDevelop, wtDevelop, iDevelop, zwDevelop, zrDevelop,
-                                            inDevelop, swDevelop, ogdDevelop);
+        List<TextField> fieldList = List.of(wwDevelop, usDevelop, sDevelop, wtDevelop, iDevelop,
+                                            zwDevelop, zrDevelop, inDevelop, swDevelop, ogdDevelop);
         fieldList.forEach(attrCellsDevelop::addCells);
         
         return fieldList;
@@ -108,7 +115,7 @@ public class AttributesTableCreator {
         return developmentCell;
     }
     
-    private List<TextField> setFinalValues(Table attributes) {
+    private List<TextField> makeFinalValuesRow(Table attributes) {
         TableRow attrCellsFinal = attributes.addRow();
         attrCellsFinal.addHeaderCell().setText("Aktualne");
         
@@ -122,8 +129,8 @@ public class AttributesTableCreator {
         TextField inFinal = getFinalCell();
         TextField swFinal = getFinalCell();
         TextField ogdFinal = getFinalCell();
-        List<TextField> fieldList = List.of(wwFinal, usFinal, sFinal, wtFinal, iFinal, zwFinal, zrFinal, inFinal,
-                                            swFinal, ogdFinal);
+        List<TextField> fieldList = List.of(wwFinal, usFinal, sFinal, wtFinal, iFinal,
+                                            zwFinal, zrFinal, inFinal, swFinal, ogdFinal);
         fieldList.forEach(attrCellsFinal::addCells);
         
         return fieldList;
@@ -136,12 +143,11 @@ public class AttributesTableCreator {
         return finalCell;
     }
     
-    private void updateFinalCell(List<TextField> finalCells, List<TextField> starting, List<TextField> development) {
-        for (int i = 0; i < finalCells.size(); i++) {
-            int value = Integer.parseInt(starting.get(i).getValue()) + Integer.parseInt(development.get(i).getValue());
-            finalCells.get(i).setValue(String.valueOf(value));
-            finalAttributes.add(String.valueOf(value));
+    private void updateFinalCellsRow() {
+        for (int i = 0; i < finalValues.size(); i++) {
+            int value = Integer.parseInt(startingValuesRow.get(i).getValue()) + Integer.parseInt(developments.get(i).getValue());
+            finalValues.get(i).setValue(String.valueOf(value));
+            finalAttributesList.add(String.valueOf(value));
         }
     }
-    
 }

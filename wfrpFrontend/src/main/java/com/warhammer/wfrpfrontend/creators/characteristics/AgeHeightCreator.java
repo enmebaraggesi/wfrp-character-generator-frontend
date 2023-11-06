@@ -7,9 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
-@Getter
+
 @Service
+@Getter
+@RequiredArgsConstructor
 public class AgeHeightCreator {
     
     private final AppearanceController controller;
@@ -17,8 +18,8 @@ public class AgeHeightCreator {
     private TextField heightField;
     
     public HorizontalLayout produceAgeAndHeightFields() {
-        this.ageField = makeAgeField();
-        this.heightField = makeHeightField();
+        makeAgeField();
+        makeHeightField();
         return new HorizontalLayout(ageField, heightField);
     }
     
@@ -30,15 +31,14 @@ public class AgeHeightCreator {
         heightField.setValue(controller.getGeneratedHeight(race) + " cm");
     }
     
-    private TextField makeHeightField() {
-        TextField height = new TextField("WZROST");
-        height.setEnabled(false);
-        return height;
+    private void makeHeightField() {
+        heightField = new TextField("WZROST");
+        heightField.setEnabled(false);
     }
     
-    private TextField makeAgeField() {
-        TextField age = new TextField("WIEK");
-        age.setEnabled(false);
-        return age;
+    private void makeAgeField() {
+        ageField = new TextField("WIEK");
+        ageField.setEnabled(false);
     }
 }
+

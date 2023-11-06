@@ -5,38 +5,17 @@ import com.vaadin.flow.component.textfield.TextField;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class BasicSkillsTableCreator {
+public class BasicSkillsTableCreator extends SkillTableCreator {
     
     private final TextField[][] valueRowsLeft = new TextField[13][4];
     private final TextField[][] valueRowsRight = new TextField[13][4];
-    private List<String> attributesList = new ArrayList<>();
     
-    public HorizontalLayout produceBasicSkillsTables(List<String> finalAttributes) {
-        this.attributesList = finalAttributes;
+    public HorizontalLayout produceTable() {
         Table left = produceLeftHalfTable();
         Table right = produceRightHalfTable();
-        updateBasicSkillsValues(attributesList);
+        updateBasicSkillsValues();
         return new HorizontalLayout(left, right);
-    }
-    
-    public void updateBasicSkillsValues(List<String> finalAttributes) {
-        updateRows(finalAttributes, valueRowsLeft);
-        updateRows(finalAttributes, valueRowsRight);
-    }
-    
-    private void updateRows(List<String> finalAttributes, TextField[][] textRows) {
-        for (TextField[] textFields : textRows) {
-            String lowerCase = textFields[0].getValue().toLowerCase();
-            String attributeIndex = getAttributeIndex(lowerCase, finalAttributes);
-            int attributeValue = Integer.parseInt(attributeIndex);
-            textFields[1].setValue(attributeIndex);
-            int developmentValue = Integer.parseInt(textFields[2].getValue());
-            textFields[3].setValue(String.valueOf(attributeValue + developmentValue));
-        }
     }
     
     private Table produceLeftHalfTable() {
@@ -81,6 +60,7 @@ public class BasicSkillsTableCreator {
         TableHeaderCell skillsTitle = basicSkillsTitle.addHeaderCell();
         skillsTitle.setColSpan(5);
         skillsTitle.setText("UMIEJĘTNOŚCI PODSTAWOWE");
+        
         TableRow basicSkillsNames = basicSkills.addRow();
         basicSkillsNames.addHeaderCell().setText("Nazwa");
         TableHeaderCell attributeName = basicSkillsNames.addHeaderCell();
@@ -107,7 +87,7 @@ public class BasicSkillsTableCreator {
         TextField developmentValue = new TextField();
         developmentValue.setWidth("50px");
         developmentValue.setValue("0");
-        developmentValue.addValueChangeListener(event -> updateBasicSkillsValues(attributesList));
+        developmentValue.addValueChangeListener(event -> updateBasicSkillsValues());
         basicSkillsTableRow.addDataCell().add(developmentValue);
         rowValues[2] = developmentValue;
         TextField sum = new TextField();
@@ -118,38 +98,17 @@ public class BasicSkillsTableCreator {
         return rowValues;
     }
     
-    private String getAttributeIndex(String attribute, List<String> finalAttributes) {
-        switch (attribute) {
-            default -> {
-                return finalAttributes.get(0);
-            }
-            case "us" -> {
-                return finalAttributes.get(1);
-            }
-            case "s" -> {
-                return finalAttributes.get(2);
-            }
-            case "wt" -> {
-                return finalAttributes.get(3);
-            }
-            case "i" -> {
-                return finalAttributes.get(4);
-            }
-            case "zw" -> {
-                return finalAttributes.get(5);
-            }
-            case "zr" -> {
-                return finalAttributes.get(6);
-            }
-            case "int" -> {
-                return finalAttributes.get(7);
-            }
-            case "sw" -> {
-                return finalAttributes.get(8);
-            }
-            case "ogd" -> {
-                return finalAttributes.get(9);
-            }
+    public void updateBasicSkillsValues() {
+        updateRows(valueRowsLeft);
+        updateRows(valueRowsRight);
+    }
+    
+    private void updateRows(TextField[][] tableRows) {
+        for (TextField[] textFields : tableRows) {
+            String attributeIndex = getFinalAttributeValue(textFields[0].getValue());
+            textFields[1].setValue(attributeIndex);
+            textFields[3].setValue(String.valueOf(Integer.parseInt(attributeIndex)
+                                                          + Integer.parseInt(textFields[2].getValue())));
         }
     }
 }

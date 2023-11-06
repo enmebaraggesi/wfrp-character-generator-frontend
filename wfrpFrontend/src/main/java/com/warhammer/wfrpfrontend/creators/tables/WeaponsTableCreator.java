@@ -4,26 +4,32 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.WeaponsController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
-@RequiredArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class WeaponsTableCreator {
+@Getter
+@RequiredArgsConstructor
+public class WeaponsTableCreator extends Tables {
     
     private final WeaponsController controller;
+    private final List<ComboBox<String>> weaponsNameComboBoxes = new ArrayList<>();
+    private final TextField[][] weaponsTextFields = new TextField[4][5];
     
-    public HorizontalLayout produceWeaponsTable() {
-        Table weaponry = makeWeaponsTableAndHeaders();
-        makeTableRow(weaponry);
-        makeTableRow(weaponry);
-        makeTableRow(weaponry);
-        makeTableRow(weaponry);
+    @Override
+    public HorizontalLayout produceTable() {
+        Table weaponry = makeTableAndHeaders();
+        makeNumberOfTableRows(weaponry, 4);
         return new HorizontalLayout(weaponry);
     }
     
-    private Table makeWeaponsTableAndHeaders() {
+    @Override
+    protected Table makeTableAndHeaders() {
         Table weaponry = new Table();
         TableRow tableName = weaponry.addRow();
         TableHeaderCell tableNameCell = tableName.addHeaderCell();
@@ -40,32 +46,39 @@ public class WeaponsTableCreator {
         return weaponry;
     }
     
-    private void makeTableRow(Table weaponry) {
-        TableRow row1 = weaponry.addRow();
+    @Override
+    protected void makeTableRow(Table table, int times) {
+        TableRow tableRow = table.addRow();
         ComboBox<String> name = new ComboBox<>();
         name.setWidth("250px");
         name.setItems(controller.getWeaponsNames());
-        row1.addDataCell().add(name);
+        tableRow.addDataCell().add(name);
+        weaponsNameComboBoxes.add(name);
         TextField category = new TextField();
         category.setWidth("150px");
         category.setEnabled(false);
-        row1.addDataCell().add(category);
+        tableRow.addDataCell().add(category);
+        weaponsTextFields[times][0] = category;
         TextField weight = new TextField();
         weight.setEnabled(false);
         weight.setWidth("80px");
-        row1.addDataCell().add(weight);
+        tableRow.addDataCell().add(weight);
+        weaponsTextFields[times][1] = weight;
         TextField range = new TextField();
         range.setEnabled(false);
         range.setWidth("80px");
-        row1.addDataCell().add(range);
+        tableRow.addDataCell().add(range);
+        weaponsTextFields[times][2] = range;
         TextField damage = new TextField();
         damage.setEnabled(false);
         damage.setWidth("100px");
-        row1.addDataCell().add(damage);
+        tableRow.addDataCell().add(damage);
+        weaponsTextFields[times][3] = damage;
         TextField traits = new TextField();
         traits.setEnabled(false);
         traits.setWidth("400px");
-        row1.addDataCell().add(traits);
+        tableRow.addDataCell().add(traits);
+        weaponsTextFields[times][4] = traits;
         name.addValueChangeListener(event -> updateValues(name.getValue(), category, weight, range, damage, traits));
     }
     

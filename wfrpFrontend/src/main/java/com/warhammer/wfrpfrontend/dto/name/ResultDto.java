@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Result {
-    
+public class ResultDto {
+
     @JsonProperty("name")
     Name name;
 }

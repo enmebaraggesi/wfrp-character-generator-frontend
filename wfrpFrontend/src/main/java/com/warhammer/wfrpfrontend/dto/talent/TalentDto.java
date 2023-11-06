@@ -1,4 +1,4 @@
-package com.warhammer.wfrpfrontend.dto;
+package com.warhammer.wfrpfrontend.dto.talent;
 
 public record TalentDto(String name,
                         Integer maxValue,

@@ -1,4 +1,4 @@
-package com.warhammer.wfrpfrontend.dto;
+package com.warhammer.wfrpfrontend.dto.profession;
 
 import java.util.Map;
 

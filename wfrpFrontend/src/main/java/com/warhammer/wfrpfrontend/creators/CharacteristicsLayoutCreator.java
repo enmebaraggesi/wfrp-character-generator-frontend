@@ -19,14 +19,15 @@ public class CharacteristicsLayoutCreator {
     private final AgeHeightCreator ageHeightCreator;
     
     public VerticalLayout prepareCharacterDescription() {
-        HorizontalLayout nameAndRace = raceCreator.produceNameAndRace(ageHeightCreator);
-        HorizontalLayout proffesionFields = professionCreator.produceProffesionFields();
-        HorizontalLayout upperSide = new HorizontalLayout(FlexComponent.Alignment.CENTER, nameAndRace, proffesionFields);
+        HorizontalLayout nameAndRace = raceCreator.produceNameAndRaceLayout();
+        HorizontalLayout proffesionFields = professionCreator.produceProfessionFields();
+        HorizontalLayout upperSide =
+                new HorizontalLayout(FlexComponent.Alignment.CENTER, nameAndRace, proffesionFields);
         HorizontalLayout andHeightFields = ageHeightCreator.produceAgeAndHeightFields();
         ComboBox<String> eyeColorsField = eyeColorsCreator.getEyeColorsField();
         ComboBox<String> hairColorsField = hairColorsCreator.getHairColorsField();
-        HorizontalLayout lowerSide = new HorizontalLayout(FlexComponent.Alignment.CENTER, andHeightFields,
-                                                          eyeColorsField, hairColorsField);
+        HorizontalLayout lowerSide =
+                new HorizontalLayout(FlexComponent.Alignment.CENTER, andHeightFields, eyeColorsField, hairColorsField);
         return new VerticalLayout(upperSide, lowerSide);
     }
 }

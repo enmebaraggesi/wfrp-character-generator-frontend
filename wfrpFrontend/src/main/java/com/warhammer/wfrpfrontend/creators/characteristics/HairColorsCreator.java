@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Getter
 @Service
+@Getter
 public class HairColorsCreator {
     
     private final ComboBox<String> hairColorsField;
@@ -25,10 +25,15 @@ public class HairColorsCreator {
         highElvesHairColors = controller.getHairColors("Wysoki elf");
         woodElvesHairColors = controller.getHairColors("Leśny elf");
         hairColorsField = new ComboBox<>("KOLOR WŁOSÓW");
-        setHairColorsByRace(humansHairColors);
     }
     
-    public void setHairColorsByRace(List<String> hairColors) {
-        hairColorsField.setItems(hairColors);
+    public void setHairColorsByRace(String race) {
+        switch (race) {
+            default -> hairColorsField.setItems(humansHairColors);
+            case "Krasnolud" -> hairColorsField.setItems(dwarfsHairColors);
+            case "Niziołek" -> hairColorsField.setItems(halflingsHairColors);
+            case "Wysoki elf" -> hairColorsField.setItems(highElvesHairColors);
+            case "Leśny elf" -> hairColorsField.setItems(woodElvesHairColors);
+        }
     }
 }
