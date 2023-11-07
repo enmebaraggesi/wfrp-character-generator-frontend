@@ -2,8 +2,12 @@ package com.warhammer.wfrpfrontend.creators.tables;
 
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.warhammer.wfrpfrontend.dto.character.SheetBasicSkills;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class BasicSkillsTableCreator extends SkillTableCreator {
@@ -110,5 +114,15 @@ public class BasicSkillsTableCreator extends SkillTableCreator {
             textFields[3].setValue(String.valueOf(Integer.parseInt(attributeIndex)
                                                           + Integer.parseInt(textFields[2].getValue())));
         }
+    }
+    
+    public SheetBasicSkills save() {
+        List<String> developmentValuesLeft = Arrays.stream(valueRowsLeft)
+                                                   .map(row -> row[2].getValue())
+                                                   .toList();
+        List<String> developmentValuesRight = Arrays.stream(valueRowsRight)
+                                                    .map(row -> row[2].getValue())
+                                                    .toList();
+        return new SheetBasicSkills(developmentValuesLeft, developmentValuesRight);
     }
 }

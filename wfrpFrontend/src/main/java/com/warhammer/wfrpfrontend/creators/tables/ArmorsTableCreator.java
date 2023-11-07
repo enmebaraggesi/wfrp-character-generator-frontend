@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Getter
@@ -87,5 +89,11 @@ public class ArmorsTableCreator extends Tables {
         penalties.setValue(controller.getPenaltiesByName(name));
         points.setValue(controller.getPointsByName(name).toString());
         traits.setValue(controller.getTraitsByName(name));
+    }
+    
+    public Set<String> save() {
+        return armorNameComboBoxes.stream()
+                                  .map(ComboBox::getValue)
+                                  .collect(Collectors.toSet());
     }
 }

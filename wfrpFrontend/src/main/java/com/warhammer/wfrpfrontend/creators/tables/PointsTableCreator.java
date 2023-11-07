@@ -3,6 +3,7 @@ package com.warhammer.wfrpfrontend.creators.tables;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.warhammer.wfrpfrontend.dto.character.SheetPoints;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
@@ -102,5 +103,16 @@ public class PointsTableCreator {
         bg.setValue(String.valueOf(baseSpeed * 4));
         speedRow.addDataCell().add(bg);
         return speed;
+    }
+    
+    public SheetPoints save() {
+        List<String> heroPoints = heroPointsTextFields.stream()
+                                                      .map(TextField::getValue)
+                                                      .toList();
+        List<String> destinyPoints = destinyPointsTextFields.stream()
+                                                            .map(TextField::getValue)
+                                                            .toList();
+        String speedValue = speedTextField.getValue();
+        return new SheetPoints(heroPoints, destinyPoints, speedValue);
     }
 }

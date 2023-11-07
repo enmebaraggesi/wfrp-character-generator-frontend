@@ -2,16 +2,17 @@ package com.warhammer.wfrpfrontend.creators.tables;
 
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.warhammer.wfrpfrontend.dto.character.SheetAttributes;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
 import java.util.*;
 
-@Getter
 @Service
 public class AttributesTableCreator {
     
+    @Getter
     private final List<String> finalAttributesList = new ArrayList<>();
     private List<TextField> startingValuesRow;
     private List<TextField> developments;
@@ -149,5 +150,15 @@ public class AttributesTableCreator {
             finalValues.get(i).setValue(String.valueOf(value));
             finalAttributesList.add(String.valueOf(value));
         }
+    }
+    
+    public SheetAttributes save() {
+        List<String> startingValues = startingValuesRow.stream()
+                                                       .map(TextField::getValue)
+                                                       .toList();
+        List<String> developmentValues = developments.stream()
+                                                     .map(TextField::getValue)
+                                                     .toList();
+        return new SheetAttributes(startingValues, developmentValues, finalAttributesList);
     }
 }

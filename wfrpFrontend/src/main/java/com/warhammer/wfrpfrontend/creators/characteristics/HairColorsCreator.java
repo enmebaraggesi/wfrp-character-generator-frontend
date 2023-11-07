@@ -36,4 +36,8 @@ public class HairColorsCreator {
             case "Leśny elf" -> hairColorsField.setItems(woodElvesHairColors);
         }
     }
+    
+    public String save() {
+        return hairColorsField.getValue();
+    }
 }

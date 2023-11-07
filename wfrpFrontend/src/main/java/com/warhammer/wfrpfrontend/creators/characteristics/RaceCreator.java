@@ -5,6 +5,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.AppearanceController;
 import com.warhammer.wfrpfrontend.controller.NamesController;
+import com.warhammer.wfrpfrontend.dto.character.SheetNameAndRace;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,11 @@ public class RaceCreator {
             eyeColorsCreator.setEyeColorsByRace(raceComboBox.getValue());
             generateName(nameField);
         });
+    }
+    
+    public SheetNameAndRace save() {
+        String name = nameField.getValue();
+        String race = raceComboBox.getValue();
+        return new SheetNameAndRace(name, race);
     }
 }

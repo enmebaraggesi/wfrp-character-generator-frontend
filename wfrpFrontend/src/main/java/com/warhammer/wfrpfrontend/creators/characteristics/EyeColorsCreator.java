@@ -36,4 +36,8 @@ public class EyeColorsCreator {
             case "Leśny elf" -> eyeColorsField.setItems(woodElvesEyeColors);
         }
     }
+    
+    public String save() {
+        return eyeColorsField.getValue();
+    }
 }

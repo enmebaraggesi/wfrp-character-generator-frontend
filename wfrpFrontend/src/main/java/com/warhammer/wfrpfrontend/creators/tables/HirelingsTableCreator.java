@@ -77,4 +77,10 @@ public class HirelingsTableCreator extends Tables {
     private void updateHirelingName(TextField name) {
         name.setValue(namesController.getFirstName());
     }
+    
+    public List<String> save() {
+        return hirelingsNameComboBoxes.stream()
+                                      .map(ComboBox::getValue)
+                                      .toList();
+    }
 }

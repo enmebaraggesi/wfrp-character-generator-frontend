@@ -4,13 +4,13 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.SkillsController;
+import com.warhammer.wfrpfrontend.dto.character.SheetAdvancedSkills;
 import com.warhammer.wfrpfrontend.dto.skill.SkillDto;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Getter
@@ -96,5 +96,15 @@ public class AdvancedSkillsTableCreator extends SkillTableCreator {
                 skillSum.setValue(String.valueOf(sum));
             }
         }
+    }
+    
+    public SheetAdvancedSkills save() {
+        List<String> advancedSkillsNames = skillNameComboBoxes.stream()
+                                                              .map(ComboBox::getValue)
+                                                              .toList();
+        List<String> developmentValues = Arrays.stream(skillTextFields)
+                                               .map(row -> row[2].getValue())
+                                               .toList();
+        return new SheetAdvancedSkills(advancedSkillsNames, developmentValues);
     }
 }

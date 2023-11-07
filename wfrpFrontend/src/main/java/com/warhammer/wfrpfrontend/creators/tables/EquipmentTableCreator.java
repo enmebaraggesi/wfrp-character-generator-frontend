@@ -61,4 +61,10 @@ public class EquipmentTableCreator extends Tables {
         String weightByName = controller.getInventoryWeightByName(name);
         weight.setValue(weightByName);
     }
+    
+    public List<String> save() {
+        return equipmentNameComboBoxes.stream()
+                                      .map(ComboBox::getValue)
+                                      .toList();
+    }
 }

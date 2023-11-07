@@ -4,6 +4,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.TalentsController;
+import com.warhammer.wfrpfrontend.dto.character.SheetTalents;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,15 @@ public class TalentsTableCreator extends Tables {
         level.setWidth("50px");
         talentRow.addDataCell().add(level);
         talentTextFields.add(level);
+    }
+    
+    public SheetTalents save() {
+        List<String> talentsNames = talentNameComboBoxes.stream()
+                                                        .map(ComboBox::getValue)
+                                                        .toList();
+        List<String> talentPoints = talentTextFields.stream()
+                                                    .map(TextField::getValue)
+                                                    .toList();
+        return new SheetTalents(talentsNames, talentPoints);
     }
 }

@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vaadin.stefan.table.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Getter
@@ -89,5 +89,11 @@ public class WeaponsTableCreator extends Tables {
         range.setValue(controller.getRangeByName(name));
         damage.setValue(controller.getDamageByName(name));
         traits.setValue(controller.getTraitsByName(name));
+    }
+    
+    public Set<String> save() {
+        return weaponsNameComboBoxes.stream()
+                                    .map(ComboBox::getValue)
+                                    .collect(Collectors.toSet());
     }
 }

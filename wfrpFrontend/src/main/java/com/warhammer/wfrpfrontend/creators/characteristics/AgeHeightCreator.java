@@ -3,6 +3,7 @@ package com.warhammer.wfrpfrontend.creators.characteristics;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.warhammer.wfrpfrontend.controller.AppearanceController;
+import com.warhammer.wfrpfrontend.dto.character.SheetAgeAndHeight;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,12 @@ public class AgeHeightCreator {
     private void makeAgeField() {
         ageField = new TextField("WIEK");
         ageField.setEnabled(false);
+    }
+    
+    public SheetAgeAndHeight save() {
+        String age = ageField.getValue();
+        String height = heightField.getValue();
+        return new SheetAgeAndHeight(age, height);
     }
 }
 

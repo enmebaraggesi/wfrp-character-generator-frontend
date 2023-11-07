@@ -50,4 +50,8 @@ public class ProfessionCreator {
         classField.setWidth("200px");
         classField.setEnabled(false);
     }
+    
+    public String save() {
+        return professionComboBox.getValue();
+    }
 }
